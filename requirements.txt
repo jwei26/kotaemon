@@ -240,7 +240,7 @@ prompt_toolkit==3.0.47
 protobuf==4.23.3
 psutil==5.9.5
 ptyprocess==0.7.0
-pulsar-client==3.2.0
+pulsar-client
 pure_eval==0.2.3
 py==1.11.0
 py-cpuinfo==9.0.0
