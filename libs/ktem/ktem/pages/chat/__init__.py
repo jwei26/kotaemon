@@ -70,6 +70,7 @@ class ChatPage(BasePage):
                     self.chat_suggestion = ChatSuggestion(self._app)
 
                 for index_id, index in enumerate(self._app.index_manager.indices):
+                    should_display = index.name != "GraphRAG"
                     index.selector = None
                     index_ui = index.get_selector_component_ui()
                     if not index_ui:
@@ -78,7 +79,7 @@ class ChatPage(BasePage):
 
                     index_ui.unrender()  # need to rerender later within Accordion
                     with gr.Accordion(
-                        label=f"{index.name} Collection", open=index_id < 1
+                        label=f"{index.name} Collection", open=index_id < 1, visible=should_display
                     ):
                         index_ui.render()
                         gr_index = index_ui.as_gradio_component()
@@ -99,7 +100,7 @@ class ChatPage(BasePage):
                         setattr(self, f"_index_{index.id}", index_ui)
 
                 if len(self._app.index_manager.indices) > 0:
-                    with gr.Accordion(label="Quick Upload") as _:
+                    with gr.Accordion(label="Quick Upload", visible = False) as _:
                         self.quick_file_upload = File(
                             file_types=list(KH_DEFAULT_FILE_EXTRACTORS.keys()),
                             file_count="multiple",

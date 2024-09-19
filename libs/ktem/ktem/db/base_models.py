@@ -57,6 +57,7 @@ class BaseUser(SQLModel):
     username_lower: str = Field(unique=True)
     password: str
     admin: bool = Field(default=False)
+    #api_key: Optional[str] = Field(default=None, sa_column=Column(String))
 
 
 class BaseSettings(SQLModel):

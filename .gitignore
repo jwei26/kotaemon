@@ -221,7 +221,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+build/!kotaemon/libs/ktem/ktem/assets/prebuilt/build/
 develop-eggs/
 downloads/
 eggs/

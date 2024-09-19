@@ -85,23 +85,24 @@ class SettingsPage(BasePage):
 
         # render index page if there are index settings (general and/or specific)
         self._render_index_tab = False
-        if self._default_settings.index.settings:
-            self._render_index_tab = True
-        else:
-            for sig in self._default_settings.index.options.values():
-                if sig.settings:
-                    self._render_index_tab = True
-                    break
+        #if is_admin:
+        #    if self._default_settings.index.settings:
+        #        self._render_index_tab = True
+        #    else:
+        #        for sig in self._default_settings.index.options.values():
+        #            if sig.settings:
+        #                self._render_index_tab = True
+        #                break
 
         # render reasoning page if there are reasoning settings
         self._render_reasoning_tab = False
-        if len(self._default_settings.reasoning.settings) > 1:
-            self._render_reasoning_tab = True
-        else:
-            for sig in self._default_settings.reasoning.options.values():
-                if sig.settings:
-                    self._render_reasoning_tab = True
-                    break
+        #if len(self._default_settings.reasoning.settings) > 1:
+        #    self._render_reasoning_tab = True
+        #else:
+        #    for sig in self._default_settings.reasoning.options.values():
+        #        if sig.settings:
+        #            self._render_reasoning_tab = True
+        #            break
 
         self.on_building_ui()
 

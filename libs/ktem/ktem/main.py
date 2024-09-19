@@ -1,4 +1,5 @@
 import gradio as gr
+import yaml
 from ktem.app import BaseApp
 from ktem.pages.chat import ChatPage
 from ktem.pages.help import HelpPage
@@ -19,9 +20,16 @@ class App(BaseApp):
         - Subscribe public events
         - Register events
     """
-
+    #def update_api_key(self, api_key):
+    #    """Update the API key and print the user ID."""
+    #    APIKeyManager.set_api_key(api_key)
+    #    print(f"userid: {self.user_id.value}")
+    #    return "API Key has been set successfully."
+        
     def ui(self):
         """Render the UI"""
+        with gr.Row():
+                gr.HTML('<img src="https://i.postimg.cc/3rkKSw8G/Screenshot-2024-09-16-at-16-19-55.png" alt="Logo" style="height:50px;">')
         self._tabs = {}
 
         with gr.Tabs() as self.tabs:
@@ -99,6 +107,17 @@ class App(BaseApp):
             ) as self._tabs["help-tab"]:
                 self.help_page = HelpPage(self)
 
+            with gr.Tab("Set Your ChatGPT API Key", elem_id="api-key-tab", id="api-key-tab") as self._tabs["api-key-tab"]:
+                with gr.Row() as api_key_row:
+                    api_key_input = gr.Textbox(label="API Key", placeholder="Enter your OpenAI API Key here", elem_id="api-key-input")
+                    api_key_submit_button = gr.Button("Save", elem_id="api-key-submit")
+            
+                api_key_submit_button.click(
+                    fn=self.save_api_key,
+                    inputs=api_key_input,
+                    outputs=gr.Textbox(label="Result", elem_id="result-output")
+                )
+
     def on_subscribe_public_events(self):
         if self.f_user_management:
             from ktem.db.engine import engine
@@ -131,14 +150,24 @@ class App(BaseApp):
                     is_admin = user.admin
 
                 tabs_update = []
-                for k in self._tabs.keys():
-                    if k == "login-tab":
-                        tabs_update.append(gr.update(visible=False))
-                    elif k == "resources-tab":
-                        tabs_update.append(gr.update(visible=is_admin))
-                    else:
-                        tabs_update.append(gr.update(visible=True))
+                #for k in self._tabs.keys():
+                #    if k == "login-tab":
+                #        tabs_update.append(gr.update(visible=False))
+                #    elif k == "resources-tab":
+                #        #tabs_update.append(gr.update(visible=is_admin))
+                #    else:
+                #        tabs_update.append(gr.update(visible=True))
 
+                #tabs_update.append(gr.update(selected="chat-tab"))
+                
+                for tab_key in self._tabs.keys():
+                    if tab_key == "login-tab":
+                        tabs_update.append(gr.update(visible=False))
+                    elif tab_key in ["chat-tab", "settings-tab"]:
+                        tabs_update.append(gr.update(visible=True, id=tab_key))
+                    else:
+                        tabs_update.append(gr.update(visible=is_admin, id=tab_key))
+                
                 tabs_update.append(gr.update(selected="chat-tab"))
 
                 return tabs_update
@@ -162,3 +191,29 @@ class App(BaseApp):
                     "show_progress": "hidden",
                 },
             )
+    
+    def create_api_emb_config_yaml(self, api_key):
+        config = {
+            'api_key': api_key,
+            'base_url': 'https://api.openai.com/v1',
+            'context_length': 8191,
+            'model': 'text-embedding-3-small',
+            'timeout': 10
+        }
+        return yaml.dump(config)
+
+    def create_api_llm_config_yaml(self, api_key):
+        config = {
+            'api_key': api_key,
+            'base_url': 'https://api.openai.com/v1',
+            'model': 'gpt-4o',
+            'temperature': 0,
+            'timeout': 20
+        }
+        return yaml.dump(config)
+
+    def save_api_key(self, api_key):
+        api_emb_config_yaml = self.create_api_emb_config_yaml(api_key)
+        api_llm_config_yaml = self.create_api_llm_config_yaml(api_key)
+        self.resources_page.emb_management.save_emb("openai", True, api_emb_config_yaml)
+        self.resources_page.llm_management.save_llm("openai", True, api_llm_config_yaml)
