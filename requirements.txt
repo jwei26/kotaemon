@@ -334,9 +334,9 @@ tokenizers==0.19.1
 tomli==2.0.1
 tomlkit==0.12.0
 toolz==0.12.1
-torch==2.4.1
-torchaudio==2.4.1
-torchvision==0.19.1
+torch
+torchaudio
+torchvision
 tqdm==4.66.5
 traitlets==5.14.3
 transformers==4.44.2
@@ -361,7 +361,7 @@ websockets==11.0.3
 Werkzeug==2.3.5
 wikipedia==1.4.0
 wrapt==1.16.0
-xformers==0.0.20
+xformers
 yarl==1.9.2
 zipp==3.20.1
 zstandard==0.21.0
