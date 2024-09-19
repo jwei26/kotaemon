@@ -152,7 +152,7 @@ langchainplus-sdk==0.0.4
 langsmith==0.1.115
 linkify-it-py==2.0.3
 llama-cloud==0.0.17
-llama-hub==0.0.79.post1
+llama-hub
 llama-index==0.10.68
 llama-index-agent-openai==0.2.9
 llama-index-cli==0.1.13
