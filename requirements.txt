@@ -1,0 +1,3 @@
+# Assuming libs/kotaemon and libs/ktem are directories in your repository
+-e ./libs/kotaemon#egg=kotaemon[all]
+-e ./libs/ktem
