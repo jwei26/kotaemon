@@ -18,7 +18,6 @@ RUN apt-get update -qqy && \
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONIOENCODING=UTF-8
-ENV GRADIO_SERVER_NAME=0.0.0.0
 
 # Create working directory
 WORKDIR /app
@@ -45,12 +44,11 @@ RUN apt-get autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf ~/.cache
-    
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
 
-# 假设 start.sh 包含正确的启动命令和环境变量设置
-CMD ["./start.sh"]
+EXPOSE 7860
+ENV GRADIO_SERVER_NAME="0.0.0.0"
+
+CMD ["python", "app.py"]
 
 # Full version
 FROM lite AS full

@@ -14,15 +14,11 @@ from ktem.main import App  # noqa
 
 app = App()
 demo = app.make()
-port = int(os.environ.get("PORT", 7860))  # Default to 7860 if PORT not set
 demo.queue().launch(
     favicon_path=app._favicon,
-    server_name='0.0.0.0',  # Bind to 0.0.0.0 for Heroku
-    server_port=port,       # Use dynamic port assigned by Heroku
     inbrowser=True,
     allowed_paths=[
         "libs/ktem/ktem/assets",
         GRADIO_TEMP_DIR,
     ],
-    share=True
 )
